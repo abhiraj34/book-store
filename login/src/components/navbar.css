@@ -1,0 +1,92 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 2rem;
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 70px;
+  box-sizing: border-box;
+}
+
+/* Logo Container */
+.logo-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Adds spacing between the logo and text */
+}
+
+/* Styled Logo Text */
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f39c12;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  animation: glow 1.5s infinite alternate;
+}
+
+/* Glowing Text Animation */
+@keyframes glow {
+  0% {
+    text-shadow: 2px 2px 10px rgba(255, 165, 0, 0.3);
+  }
+  100% {
+    text-shadow: 2px 2px 20px rgba(255, 165, 0, 0.8);
+  }
+}
+
+
+/* Centered navigation buttons */
+.nav-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Logout button at the end */
+.nav-end {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Common Button Styling */
+.orders-btn, .cart-btn, .logout-btn, .home-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+/* Individual Button Colors */
+.orders-btn, .cart-btn, .home-btn {
+  background: #3498db;
+  color: white;
+}
+
+.orders-btn:hover, .cart-btn:hover, .home-btn:hover {
+  background: #d4700c;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+}
+
+.logout-btn:hover {
+  background: #b26e66;
+}

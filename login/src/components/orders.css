@@ -1,0 +1,77 @@
+/* Orders Page Container */
+.orders-page {
+    width: 90%;
+    max-width: 800px;
+    background: linear-gradient(135deg, #171717, #666568);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease-in-out;
+    margin: 50px auto;
+    margin-top: 120px;
+    text-align: center;
+  }
+  
+  /* Table Container */
+  .orders-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  /* Orders Table */
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  /* Table Header */
+  .orders-table th {
+    background: #222;
+    color: #ffdd57;
+    padding: 12px;
+    font-size: 16px;
+    border-bottom: 2px solid #444;
+  }
+  
+  /* Table Rows */
+  .orders-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ddd;
+    text-align: center;
+  }
+  
+  /* Alternating Row Colors */
+  .orders-table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Hover Effect */
+  .orders-table tr:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Empty Orders Message */
+  .no-orders {
+    font-size: 18px;
+    opacity: 0.7;
+    text-align: center;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
