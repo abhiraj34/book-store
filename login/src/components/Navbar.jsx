@@ -27,14 +27,12 @@ const Navbar = () => {
         <h1 className="logo-text">BookStore</h1>
       </div>
 
-      {/* Centered navigation buttons */}
       <div className="nav-center">
         <Link to="/" className="home-btn">Home</Link>  
         <Link to="/orders" className="orders-btn">Orders</Link>
         <Link to="/cart" className="cart-btn">Cart</Link>
       </div>
 
-      {/* Logout button positioned at the end */}
       <div className="nav-end">
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>

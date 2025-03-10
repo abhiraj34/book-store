@@ -1,3 +1,5 @@
+// import { CartProvider } from "./context/CartContext";
+import CartProvider from "./context/CartContext";
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
