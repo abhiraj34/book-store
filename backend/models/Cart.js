@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
 
 const CartSchema = new mongoose.Schema({
-  email: { type: String, required: true }, // Link cart to user email
-  items: [
-    {
-      bookId: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },
-      title: String,
-      author: String,
-      price: String,
-      image: String,
-    },
-  ],
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    items: [
+        {
+            bookId: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
+            title: { type: String, required: true },
+            price: { type: String, required: true },
+            quantity: { type: Number, required: true }
+        }
+    ]
 });
 
 module.exports = mongoose.model("Cart", CartSchema);

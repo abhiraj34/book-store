@@ -5,10 +5,14 @@ const User = require("../models/user");
 
 const router = express.Router();
 
-//JWT Secret Key
+// JWT Secret Key
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key";
 
-//Register User
+// Fixed Admin Credentials
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "admin123";
+
+// Register User
 router.post("/register", async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -34,7 +38,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-//Login User
+// Login User
 router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -52,9 +56,30 @@ router.post("/login", async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ userId: user._id, role: "user" }, JWT_SECRET, { expiresIn: "1h" });
 
-        res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+        res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: "user" } });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+// Admin Login
+router.post("/admin-login", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+       
+
+        if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+            return res.status(403).json({ message: "Invalid admin credentials" });
+        }
+
+        // Generate admin JWT token
+        const token = jwt.sign({ role: "admin" }, JWT_SECRET, { expiresIn: "2h" });
+
+        res.json({ token, user: { username, role: "admin" } });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error" });
@@ -62,4 +87,3 @@ router.post("/login", async (req, res) => {
 });
 
 module.exports = router;
-

@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("./config/db"); // Import database connection
+const connectDB = require("./config/db");
 
-const authRoutes = require("./routes/auth");
-const cartRoutes = require("./routes/cartRoutes"); // Ensure correct import
-const bookRoutes = require("./routes/bookRoutes"); // Import book routes
+const authRoutes = require("./routes/auth"); 
+const cartRoutes = require("./routes/cartRoutes"); 
+const bookRoutes = require("./routes/bookRoutes"); 
+const orderRoutes = require("./routes/orderRoutes"); 
 
 const app = express();
 
@@ -12,23 +13,14 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors({
-  origin: "http://localhost:5173", // Allow frontend requests
-  credentials: true,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Authorization",
-}));
-app.use(express.json()); // Parse JSON requests
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
 
-//Use Routes
+// Use Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/cart", cartRoutes); // Ensure this is correctly defined
+app.use("/api/cart", cartRoutes);  // Now using MongoDB
 app.use("/api/books", bookRoutes);
-
-// Test Route
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+app.use("/api/orders", orderRoutes);
 
 // Start Server
 const PORT = 5000;

@@ -18,6 +18,7 @@ body {
   margin-bottom: 20px;
 }
 
+/* Book Section */
 .book-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -55,16 +56,59 @@ body {
   color: #28a745;
 }
 
+/* Buttons */
 button {
-  padding: 8px 12px;
+  padding: 8px 14px;
   background: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  transition: background 0.3s ease;
 }
 
 button:hover {
   background: #0056b3;
+}
+
+/* Spacing between buttons */
+.book-info button {
+  margin-right: 8px; /* Adds space between Edit and Delete buttons */
+}
+
+.delete-button {
+  background: #dc3545; /* Red delete button */
+}
+
+.delete-button:hover {
+  background: #a71d2a;
+}
+
+/* Add Book Section */
+.add-book {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.add-book input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background: #333;
+  color: white;
+}
+
+/* Logout Button */
+.logout-button {
+  background: #ff5722;
+  margin-top: 20px;
+}
+
+.logout-button:hover {
+  background: #d84315;
 }

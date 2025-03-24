@@ -3,6 +3,7 @@ import "./dash.css";
 
 const Dash = ({ updateCartCount }) => {
   const [books, setBooks] = useState([]);
+  const [cart, setCart] = useState([]); // Track books in the cart
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -12,6 +13,11 @@ const Dash = ({ updateCartCount }) => {
 
         const data = await response.json();
         setBooks(data);
+
+        // Load cart from localStorage
+        const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCart(savedCart);
+        console.log("Cart Loaded from LocalStorage:", savedCart); // Debugging
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -21,20 +27,28 @@ const Dash = ({ updateCartCount }) => {
   }, []);
 
   const handleAddToCart = (book) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingBookIndex = cart.findIndex((item) => item._id === book._id);
+    let updatedCart = [...cart];
+    const existingBookIndex = updatedCart.findIndex((item) => item._id === book._id);
 
     if (existingBookIndex !== -1) {
-      cart[existingBookIndex].quantity += 1;
+      updatedCart[existingBookIndex].quantity += 1;
     } else {
-      cart.push({ ...book, quantity: 1 });
+      updatedCart.push({ ...book, quantity: 1 });
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCart(updatedCart);
 
     if (updateCartCount) {
-      updateCartCount(cart.length);
+      updateCartCount(updatedCart.reduce((sum, item) => sum + item.quantity, 0));
     }
+
+    console.log("Cart Updated:", updatedCart); // Debugging
+  };
+
+  const getBookQuantity = (bookId) => {
+    const item = cart.find((item) => item._id === bookId);
+    return item ? item.quantity : 0;
   };
 
   return (
@@ -48,8 +62,16 @@ const Dash = ({ updateCartCount }) => {
               <div className="book-info">
                 <h3>{book.title}</h3>
                 <p>Author: {book.author}</p>
-                <p className="price">₹{book.price}</p> {/* Added ₹ symbol */}
-                <button onClick={() => handleAddToCart(book)}>Add to Cart</button>
+                <p className="price">₹{book.price}</p>
+
+                {getBookQuantity(book._id) > 0 ? (
+                  <div className="cart-actions">
+                    <button className="added-btn">Added ({getBookQuantity(book._id)})</button>
+                    <button className="plus-btn" onClick={() => handleAddToCart(book)}>+</button>
+                  </div>
+                ) : (
+                  <button onClick={() => handleAddToCart(book)}>Add to Cart</button>
+                )}
               </div>
             </div>
           ))

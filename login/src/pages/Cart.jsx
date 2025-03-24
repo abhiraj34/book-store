@@ -1,94 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./cart.css";
 
 const Cart = ({ updateCartCount }) => {
-  const [cart, setCart] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const mergedCart = mergeCartItems(savedCart);
-    setCart(mergedCart);
-    calculateTotal(mergedCart);
+    const fetchCart = () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(cart);
+      console.log("Fetched Cart from LocalStorage:", cart); // Debugging
+    };
+
+    fetchCart();
   }, []);
 
-  // Merges duplicate items in the cart and sums up their quantities
-  const mergeCartItems = (cartItems) => {
-    return cartItems.reduce((acc, book) => {
-      const existingItem = acc.find((item) => item._id === book._id);
-      if (existingItem) {
-        existingItem.quantity += book.quantity;
-      } else {
-        acc.push({ ...book });
-      }
-      return acc;
-    }, []);
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  // Function to calculate total price
-  const calculateTotal = (cartItems) => {
-    const total = cartItems.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
-    setTotalPrice(total);
-  };
-
-  // Function to remove a book from the cart (decreases quantity or removes item)
-  const handleRemoveFromCart = (bookId) => {
-    const updatedCart = cart.map((item) =>
-      item._id === bookId ? { ...item, quantity: item.quantity - 1 } : item
-    ).filter((item) => item.quantity > 0);
-
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    calculateTotal(updatedCart);
-
-    if (updateCartCount) {
-      updateCartCount(updatedCart.length);
-    }
-  };
-
-  // Function to handle "Buy Now"
   const handleBuyNow = () => {
-    if (cart.length === 0) {
-      alert("Your cart is empty!");
-      return;
-    }
+    if (cartItems.length === 0) return alert("Your cart is empty!");
 
-    // Get existing orders or create a new one
+    // Move cart items to orders
     const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    const updatedOrders = [...existingOrders, ...cart];
+    const newOrders = [...existingOrders, ...cartItems];
+    localStorage.setItem("orders", JSON.stringify(newOrders));
 
-    // Save updated orders and clear the cart
-    localStorage.setItem("orders", JSON.stringify(updatedOrders));
+    // Empty the cart
     localStorage.removeItem("cart");
-
-    // Update state
-    setCart([]);
-    setTotalPrice(0);
-    if (updateCartCount) {
-      updateCartCount(0);
-    }
-
+    setCartItems([]);
+    updateCartCount(0); // Reset cart count
     alert("Order placed successfully!");
   };
 
   return (
     <div className="cart-container">
       <h2>Your Cart</h2>
-      {cart.length === 0 ? (
-        <p>Cart is empty.</p>
-      ) : (
-        <>
-          {cart.map((book) => (
-            <div key={book._id} className="cart-item">
-              <h4>{book.title}</h4>
-              <p>Author: {book.author}</p>
-              <p className="price">₹{book.price} x {book.quantity} = ₹{book.price * book.quantity}</p>
-              <button onClick={() => handleRemoveFromCart(book._id)}>Remove</button>
-            </div>
+      {cartItems.length > 0 ? (
+        <ul>
+          {cartItems.map((item) => (
+            <li key={item._id} className="cart-item">
+              <img src={item.image} alt={item.title} className="cart-item-image" />
+              <div className="cart-item-details">
+                <h3>{item.title}</h3>
+                <p>Quantity: {item.quantity}</p>
+                <p>Price: ₹{item.price * item.quantity}</p>
+              </div>
+            </li>
           ))}
-          <h3 className="total-price">Total Price: ₹{totalPrice}</h3>
-          <button className="buy-button" onClick={handleBuyNow}>Buy Now</button>
-        </>
+        </ul>
+      ) : (
+        <p className="empty-cart">Your cart is empty.</p>
+      )}
+      <h3 className="total-price">Total: ₹{calculateTotal()}</h3>
+      
+      {/* Buy Now Button */}
+      {cartItems.length > 0 && (
+        <button className="buy-now-btn" onClick={handleBuyNow}>Buy Now</button>
       )}
     </div>
   );

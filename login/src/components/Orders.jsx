@@ -5,18 +5,20 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    // Fetch orders from localStorage
+    // Fetch orders from localStorage when component mounts
     const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
     setOrders(savedOrders);
   }, []);
 
   useEffect(() => {
-    // Listen for a login event and clear orders on new login
+    // Function to clear orders on login
     const handleLogin = () => {
+      console.log("Clearing orders after login...");
       localStorage.removeItem("orders");
-      setOrders([]); // Clear orders
+      setOrders([]); // Clear the orders state
     };
 
+    // Listen for the new login event
     window.addEventListener("newLogin", handleLogin);
 
     return () => {
